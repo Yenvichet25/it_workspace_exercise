@@ -19,8 +19,7 @@ class MyHome extends StatefulWidget {
 
 class _MyHomeState extends State<MyHome> {
   int index = 0;
-  PageController _pageController =
-      PageController(initialPage: 0, viewportFraction: 0.8);
+  PageController _pageController = PageController(initialPage: 0, viewportFraction:0.8);
 
   @override
   Widget build(BuildContext context) {
