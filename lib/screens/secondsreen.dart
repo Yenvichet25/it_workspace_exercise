@@ -9,7 +9,7 @@ class SecondScreen extends StatefulWidget {
 }
 
 class _SecondScreenState extends State<SecondScreen> {
-  List<String> words = english.nouns.take(5000).toList()..sort();
+  List<String> words = english.nouns.take(10).toList()..sort();
 
   @override
   void initState() {
@@ -19,6 +19,11 @@ class _SecondScreenState extends State<SecondScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.push(context, SlideRightRoute(
+            page: ThirdScreen()
+          ))
+          ,child: Icon(Icons.add) ,),
         appBar: AppBar(
           leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
