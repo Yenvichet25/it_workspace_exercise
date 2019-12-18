@@ -1,6 +1,7 @@
-import 'package:first_app/screens/secondsreen.dart';
+import 'package:first_app/screens/page_reveal.dart';
 import 'package:flutter/material.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nima/nima_actor.dart';
 void main() {
   runApp(MyApp());
 }
@@ -8,104 +9,99 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MyHome());
+    return MaterialApp(
+      home: Home(),
+    );
   }
 }
 
-class MyHome extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _MyHomeState createState() => _MyHomeState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomeState extends State<MyHome> {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  AnimationController animationController;
+  Animation animation;
+  PageController pageController =
+      PageController(initialPage: 0, viewportFraction: 0.7);
   int index = 0;
-  PageController _pageController = PageController(initialPage: 0, viewportFraction:0.8);
+
+  @override
+  void initState() {
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    animation =
+        CurvedAnimation(parent: animationController, curve: Curves.easeIn)
+          ..addListener(() => setState(() {}));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    print(animation.value);
+
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SecondScreen()));
-          },
-          child: Icon(Icons.add),
-        ),
-        body: Stack(
-          children: <Widget>[
-            Center(
-              child: Container(
-                height: size.height / 2,
-                width: size.width,
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: (int i){
-                      index = i;
-                      setState(() {
+        body: new NimaActor("assets/manhe.nma", alignment:Alignment.center, fit:BoxFit.contain, animation:"manhe_animate"),
 
-                      });
-                  },
-                  children: <Widget>[
-                    Container(
-                      color: Colors.red,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        color: Colors.blue,
-                      ),
-                    ),
-                    Container(
-                      color: Colors.green,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: (((size.height / 2) - (size.height * 0.1 / 2))) -
-                  size.height / 4 -
-                  (size.height / 4 * 0.3),
-              child: Container(
-                height: size.height * 0.1,
-                width: size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton(
-                      color: Colors.red,
-                      child: Icon(Icons.arrow_back),
-                      onPressed:index == 0 ? null : () {
-                        if (index > 0) {
-                          _pageController.animateToPage(index - 1,
-                              duration: Duration(milliseconds: 1000), curve: Curves.fastOutSlowIn);
-
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      width: 100,
-                      child: Center(
-                        child: Text("$index"),
-                      ),
-                    ),
-                    FlatButton(
-                      color: Colors.blue,
-                      child: Icon(Icons.arrow_forward),
-                      onPressed: index == 2 ? null : () {
-                        if (index >= 0 && index <2) {
-                          _pageController.animateToPage(index+1,
-                              duration: Duration(milliseconds: 1000), curve: Curves.fastOutSlowIn);
-
-                        }
-                      },
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ));
+//      body: Stack(
+//        children: <Widget>[
+//          PageView(
+//            controller: pageController,
+//            scrollDirection: Axis.vertical,
+//            onPageChanged: (int i) {
+//              index = i;
+//              animationController.forward(from: 0.0);
+//              setState(() {});
+//            },
+//            children: <Widget>[
+//              Container(
+//                  child: PageReveal(
+//                revealPercent: index != 0 ? 0.0 : animation.value,
+//                child: Container(
+//                  decoration: BoxDecoration(
+//                    shape: BoxShape.circle,
+//                    color: Colors.red
+//                  ),
+//                  child: Center(child: Text("Login")),
+//                ),
+//              )),
+//              Container(
+//                  child: PageReveal(
+//                revealPercent: index != 1 ? 0.0 : animation.value,
+//                child: Opacity(
+//                  opacity: animation.value,
+//                  child: Container(
+//                    decoration: BoxDecoration(
+//                        shape: BoxShape.circle,
+//                        color: Colors.green),
+//                    child: Transform(
+//                      transform: Matrix4.translationValues(
+//                          0.0, 100 - (100 * animation.value), 0.0),
+//                      child: Column(
+//                          mainAxisAlignment: MainAxisAlignment.center,
+//                          children: <Widget>[Text("Register")]),
+//                    ),
+//                  ),
+//                ),
+//              ))
+//            ],
+//          ),
+//          Align(
+//            alignment: Alignment.centerLeft,
+//            child: IconButton(
+//              icon: Icon(index == 0
+//                  ? FontAwesomeIcons.chevronCircleDown
+//                  : FontAwesomeIcons.chevronCircleUp),
+//              onPressed: () {
+//                pageController.animateToPage(index == 0 ? 1 : 0,
+//                    duration: Duration(milliseconds: 1000),
+//                    curve: Curves.fastOutSlowIn);
+//              },
+//            ),
+//          )
+//        ],
+//      ),
+    );
   }
 }
